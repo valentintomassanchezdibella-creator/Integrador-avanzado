@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <section>
+        <div class="container">
+            <input id="aula" ="text">
+            <input id="responsable" type="text">
+            <input id="tipo" type="text">
+            <input id="descripcion" type="text">
+            <input id="fecha" type="text">
+            <select id="estado" name="">
+                <option value="">Pendiente</option>
+                <option value="">En proceso</option>
+                <option value="">Resuelta</option>
+            </select>
+            <select id="prioridad" name="">
+                <option value="">Baja</option>
+                <option value="">Medio</option>
+                <option value="">Alta</option>
+                <option value="">Urgente</option>
+            </select>
+
+            <button onclick="Enviar()">Enviar</button>
+        </div>
+
+
+        <div class="incidencias-container" id="incidencias-container">
+
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>

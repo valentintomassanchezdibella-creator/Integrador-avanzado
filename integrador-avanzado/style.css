@@ -1,0 +1,16 @@
+
+.incidencias-container{
+    background: yellow;
+    width: 100%;
+    height: 800px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 50px;
+
+    .card{
+        width: 100%;
+        height: 300px;
+        background: chocolate;
+    }
+}
+
