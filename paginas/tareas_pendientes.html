@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style.css">
+    <title>Document</title>
+</head>
+<body>
+    <header class="header">
+        <div class="navbar">
+            <nav id="nav">
+                <ul>
+                    <li><a href="../index.html" class="btn-1">Gestion de Incidencias</a></li>
+                    <li><a href="./gestion_aula.html" class="btn-1">Gestion de Aulas</a></li>
+                    <li><a href="./reservas.html" class="btn-1">Reservas</a></li>
+                    <li><a href="./estadisticas.html" class="btn-1">Estadisticas</a></li>
+                    <li><a href="./tareas_pendientes.html" class="btn-1 actual">Tareas Pendientes</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <section class="funcionalidades">
+        <div class="contenedor">
+            <li><button class="btn-2">Crear Tarea</button></li>
+            <li><input type="text" class="btn-2" id="search-input" placeholder="Buscar Tarea" oninput="filterTareas()"></li>
+            <li><select>
+                <option value="">Todos los Estados</option>
+                <option value="">Pendiente</option>
+                <option value="">En proceso</option>
+                <option value="">Resuelta</option>
+            </select></li>
+            <li><select id="prioridad" name="">
+                <option value="">Todas las prioridades</option>
+                <option value="">Baja</option>
+                <option value="">Medio</option>
+                <option value="">Alta</option>
+                <option value="">Urgente</option>
+            </select></li>
+            <li><select id="vencida" name="">
+                <option value="">Todas las Tareas</option>
+                <option value="">Tareas Vencidas</option>
+                <option value="">Tareas sin Vencer</option>
+            </select></li>
+        </div>
+    </section>
+
+    <section class="tareas-pendientes">
+        <div class="tareas-pendientes-container">
+            <div class="card-tareas-pendientes">
+                <div class="card-contenido">
+                    <div class="card-descripcion">
+                        <span class="campo-label">Descripción</span>
+                        <p>Reparar el keke</p>
+                    </div>
+
+                    <div class="card-campos">
+                        <div class="campo">
+                            <span class="campo-label">Responsable</span>
+                            <span class="campo-valor">Martín García</span>
+                        </div>
+                        <div class="campo">
+                            <span class="campo-label">Prioridad</span>
+                            <span class="campo-valor">Urgente</span>
+                        </div>
+                        <div class="campo">
+                            <span class="campo-label">Fecha limite</span>
+                            <span class="campo-valor">24 may 2026</span>
+                        </div>
+                        <div class="campo">
+                            <span class="campo-label">Estado</span>
+                            <span class="campo-valor">En progreso</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-acciones">
+                    <div class="izquierda">
+                        <button class="pointer" onclick="editarTarea()">Editar</button>
+                        <button class="no-pointer">Marcar como Completada</button>
+                        <button class="pointer" onclick="eliminarTarea()">Eliminar</button>
+                    </div>
+                    <div class="derecha">
+                        <input type="checkbox">
+                    </div>
+                </div>
+
+            </div>
+            
+        </div>
+    </section>   
+
+    <script src="../script.js"></script>  
+</body>
+</html>

@@ -1,0 +1,529 @@
+html{
+    scroll-behavior: smooth;
+    scroll-padding-top: 64px;
+    background-color: #252525;
+}
+
+*{
+    margin: 0;
+    list-style: none;
+    text-decoration: none;
+}
+
+.header{
+    width: 100%;
+    position: relative;
+    background-color: red;
+    padding-bottom: 20px;
+
+    .navbar{
+        display: flex;
+        align-items: center;   
+        justify-content: space-between;
+        min-height: 64px;
+        width: 100%;
+        padding: 20px 0px;
+        box-sizing: border-box;
+        background-color: #252525;
+        flex-wrap: wrap;
+
+        nav ul{
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+
+            .btn-1{
+                background-color: red;
+                color: white;
+                border: none;
+                padding: 7px;
+                font-size: 20px;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+
+                &.actual{
+                    background-color: purple;
+                }
+            }
+        }
+    }
+}
+
+.funcionalidades{
+    width: 100%;
+    position: relative;
+    background-color: #252525;
+    padding: 20px;
+    box-sizing: border-box;
+
+    .contenedor{
+        display: flex;
+        align-items: center; 
+        gap: 10px;  
+        margin-left: 20px;
+        flex-wrap: wrap;
+
+        .btn-2, select{
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 7px;
+            font-size: 22px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+    }
+}
+
+.incidencias{
+    .incidencias-container{
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 50px;
+
+        .card-incidencia {
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+
+            .card-contenido {
+                display: flex;
+                gap: 1.25rem;
+                padding: 1.25rem;
+
+                .card-campos {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 10px 16px;
+                    flex: 1;
+
+                    .campo {
+                        background-color: red;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 3px;
+                        border: 1px solid #ccc;
+                        border-radius: 6px;
+                        padding: 10px;
+
+                        .campo-label {
+                            font-size: 11px;
+                            color: #999;
+                            text-transform: uppercase;
+                            letter-spacing: 0.04em;
+                        }
+
+                        .campo-valor {
+                            font-size: 14px;
+                            font-weight: 500;
+                            color: #1a1a1a;
+                        }
+                    }
+                }
+
+                .card-descripcion {
+                    width: 40%;
+                    flex-shrink: 0;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 6px;
+                    background-color: red;
+                    border: 1px solid #ccc;
+                    border-radius: 6px;
+                    padding: 10px;
+                    
+                    .campo-label {
+                        font-size: 11px;
+                        color: #999;
+                        text-transform: uppercase;
+                        letter-spacing: 0.04em;
+                    }
+
+                    p {
+                        font-size: 14px;
+                        color: #1a1a1a;
+                        line-height: 1.6;
+                        margin: 0;
+                    }
+                }
+            }
+
+            .card-acciones {
+                padding: 0.75rem 1.25rem;
+                display: flex;
+                justify-content: flex-end;
+                gap: 8px;
+
+                button {
+                    font-size: 13px;
+                    padding: 6px 12px;
+                    border: 1px solid #ccc;
+                    border-radius: 6px;
+                    background: red;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
+
+.gestion-aula{
+    .gestion-aula-container{
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 50px;
+
+        .card-gestion-aula {
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+
+            .card-contenido {
+                display: flex;
+                gap: 1.25rem;
+                padding: 1.25rem;
+
+                .card-campos {
+                    display: grid;
+                    background: #ddd;
+                    padding: 1px;
+                    gap: 1px;
+                    flex: 1;
+
+                    .campo {
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 1px;
+                        border-radius: 6px;
+
+                        .campo-label {
+                            padding: 6px 8px;
+                            background-color: rgb(200, 0, 0);
+                            font-size: 11px;
+                            color: #999;
+                            text-transform: uppercase;
+                            letter-spacing: 0.04em;
+                        }
+
+                        .campo-valor {
+                            padding: 6px 8px;
+                            background-color: rgb(255, 0, 0);
+                            font-size: 14px;
+                            font-weight: 500;
+                            color: #1a1a1a;
+                        }
+                    }
+                }
+            }
+
+            .card-acciones {
+                padding: 0.75rem 1.25rem;
+                display: flex;
+                justify-content: flex-end;
+                gap: 8px;
+
+                button {
+                    font-size: 13px;
+                    padding: 6px 12px;
+                    border: 1px solid #ccc;
+                    border-radius: 6px;
+                    background: red;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
+
+.reservas{
+    .reservas-container{
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 50px;
+
+        .card-reservas {
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+
+            .card-contenido {
+                display: flex;
+                gap: 1.25rem;
+                padding: 1.25rem;
+
+                .card-campos {
+                    display: grid;
+                    grid-template-columns: repeat(6, 1fr);
+                    gap: 10px 16px;
+                    flex: 1;
+                    & > *:nth-child(1) { grid-column: span 2; }
+                    & > *:nth-child(2) { grid-column: span 2; }
+                    & > *:nth-child(3) { grid-column: span 2; }
+                    & > *:nth-child(4) { grid-column: 2 / span 2; }
+                    & > *:nth-child(5) { grid-column: 4 / span 2; }
+
+                    .campo {
+                        background-color: red;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 3px;
+                        border: 1px solid #ccc;
+                        border-radius: 6px;
+                        padding: 10px;
+
+                        .campo-label {
+                            font-size: 11px;
+                            color: #999;
+                            text-transform: uppercase;
+                            letter-spacing: 0.04em;
+                        }
+
+                        .campo-valor {
+                            font-size: 14px;
+                            font-weight: 500;
+                            color: #1a1a1a;
+                        }
+                    }
+                }
+                
+
+                .card-descripcion {
+                    width: 40%;
+                    flex-shrink: 0;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 6px;
+                    background-color: red;
+                    border: 1px solid #ccc;
+                    border-radius: 6px;
+                    padding: 10px;
+                    
+                    .campo-label {
+                        font-size: 11px;
+                        color: #999;
+                        text-transform: uppercase;
+                        letter-spacing: 0.04em;
+                    }
+
+                    p {
+                        font-size: 14px;
+                        color: #1a1a1a;
+                        line-height: 1.6;
+                        margin: 0;
+                    }
+                }
+            }
+
+            .card-acciones {
+                padding: 0.75rem 1.25rem;
+                display: flex;
+                justify-content: flex-end;
+                gap: 8px;
+
+                button {
+                    font-size: 13px;
+                    padding: 6px 12px;
+                    border: 1px solid #ccc;
+                    border-radius: 6px;
+                    background: red;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
+
+.estadisticas{
+    .card-contenido {
+        display: flex;
+        gap: 1.25rem;
+        padding: 1.25rem;
+
+        .card-campos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 10px 16px;
+            flex: 1;
+
+            .campo {
+                background-color: red;
+                display: flex;
+                flex-direction: column;
+                gap: 3px;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+                padding: 10px;
+
+                .campo-label {
+                    font-size: 11px;
+                    color: #999;
+                    text-transform: uppercase;
+                    letter-spacing: 0.04em;
+                }
+
+                .campo-valor {
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #1a1a1a;
+                }
+            }
+        }
+
+        .card-descripcion {
+            width: 40%;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            background-color: red;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 10px;
+            
+            .campo-label {
+                font-size: 11px;
+                color: #999;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+            }
+
+            p {
+                font-size: 14px;
+                color: #1a1a1a;
+                line-height: 1.6;
+                margin: 0;
+            }
+        }
+    }
+}
+
+.tareas-pendientes{
+    .tareas-pendientes-container{
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 50px;
+
+        .card-tareas-pendientes {
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            display: flex;
+
+            .card-contenido {
+                width: 70%;
+                border: 1px solid #e0e0e0;
+                border-radius: 12px;
+                display: flex;
+                gap: 1.25rem;
+                padding: 1.25rem;
+
+                .card-campos {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 10px 16px;
+                    flex: 1;
+
+                    .campo {
+                        background-color: red;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 3px;
+                        border: 1px solid #ccc;
+                        border-radius: 6px;
+                        padding: 10px;
+
+                        .campo-label {
+                            font-size: 11px;
+                            color: #999;
+                            text-transform: uppercase;
+                            letter-spacing: 0.04em;
+                        }
+
+                        .campo-valor {
+                            font-size: 14px;
+                            font-weight: 500;
+                            color: #1a1a1a;
+                        }
+                    }
+                }
+                
+
+                .card-descripcion {
+                    width: 40%;
+                    flex-shrink: 0;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 6px;
+                    background-color: red;
+                    border: 1px solid #ccc;
+                    border-radius: 6px;
+                    padding: 10px;
+                    
+                    .campo-label {
+                        font-size: 11px;
+                        color: #999;
+                        text-transform: uppercase;
+                        letter-spacing: 0.04em;
+                    }
+
+                    p {
+                        font-size: 14px;
+                        color: #1a1a1a;
+                        line-height: 1.6;
+                        margin: 0;
+                    }
+                }
+            }
+
+            .card-acciones {
+                width: 20%;
+                padding: 0.75rem 1.25rem;
+                display: flex;
+                flex-direction: column;
+                display: grid;
+                grid-template-columns: 1fr auto;
+                gap: 8px;
+
+                .izquierda {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    gap: 15px;
+
+                    .pointer {
+                        font-size: 13px;
+                        padding: 6px 12px;
+                        border: 1px solid #ccc;
+                        border-radius: 6px;
+                        background: red;
+                        cursor: pointer;
+                    }
+
+                    .no-pointer {
+                        font-size: 13px;
+                        padding: 6px 12px;
+                        border: 1px solid #ccc;
+                        border-radius: 6px;
+                        background: red;
+                    }
+                }
+
+                .derecha{
+                    display: flex;
+                    align-self: center;
+
+                    input[type="checkbox"]{
+                        width: 20px;
+                        height: 20px;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <header class="header">
+        <div class="navbar">
+            <nav id="nav">
+                <ul>
+                    <li><a href="index.html" class="btn-1 actual">Gestion de Incidencias</a></li>
+                    <li><a href="paginas/gestion_aula.html" class="btn-1">Gestion de Aulas</a></li>
+                    <li><a href="paginas/reservas.html" class="btn-1">Reservas</a></li>
+                    <li><a href="paginas/estadisticas.html" class="btn-1">Estadisticas</a></li>
+                    <li><a href="paginas/tareas_pendientes.html" class="btn-1">Tareas Pendientes</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <section class="funcionalidades">
+        <div class="contenedor">
+            <li><button class="btn-2">Crear Incidencia</button></li>
+            <li><input type="text" class="btn-2" id="search-input" placeholder="Buscar incidencia" oninput="filterIncidencia()"></li>
+            <li><input type="text" class="btn-2" id="search-aula" placeholder="Buscar Aula" oninput="filterAula()"></li>
+            <li><select>
+                <option value="">Todos los Estados</option>
+                <option value="">Pendiente</option>
+                <option value="">En proceso</option>
+                <option value="">Resuelta</option>
+            </select></li>
+            <li><select id="prioridad" name="">
+                <option value="">Todas las prioridades</option>
+                <option value="">Baja</option>
+                <option value="">Medio</option>
+                <option value="">Alta</option>
+                <option value="">Urgente</option>
+            </select></li>
+        </div>
+    </section>
+
+    <section class="incidencias">
+        <div class="incidencias-container">
+            <div class="card-incidencia">
+                <div class="card-contenido">
+
+                    <div class="card-campos">
+                        <div class="campo">
+                            <span class="campo-label">Aula</span>
+                            <span class="campo-valor">Aula 12</span>
+                        </div>
+                        <div class="campo">
+                            <span class="campo-label">Responsable</span>
+                            <span class="campo-valor">Martín García</span>
+                        </div>
+                        <div class="campo">
+                            <span class="campo-label">Tipo de problema</span>
+                            <span class="campo-valor">Eléctrico</span>
+                        </div>
+                        <div class="campo">
+                            <span class="campo-label">Prioridad</span>
+                            <span class="campo-valor">Urgente</span>
+                        </div>
+                        <div class="campo">
+                            <span class="campo-label">Fecha</span>
+                            <span class="campo-valor">24 may 2026</span>
+                        </div>
+                        <div class="campo">
+                            <span class="campo-label">Estado</span>
+                            <span class="campo-valor">En progreso</span>
+                        </div>
+                    </div>
+
+
+                    <div class="card-descripcion">
+                        <span class="campo-label">Descripción</span>
+                        <p>Se detectó un corte de luz en el tablero principal. Los tomacorrientes de la pared trasera no funcionan y el proyector no enciende.</p>
+                    </div>
+
+                </div>
+
+                <div class="card-acciones">
+                    <button onclick="editarIncidencia()">Editar</button>
+                    <button onclick="eliminarIncidencia()">Eliminar</button>
+                    <button onclick="cambiarEstado()">Cambiar estado</button>
+                </div>
+
+            </div>
+        </div>
+    </section>    
+    
+
+    <script src="script.js"></script>
+</body>
+</html>
