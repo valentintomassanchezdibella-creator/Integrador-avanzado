@@ -22,72 +22,52 @@
     </header>
     <section class="funcionalidades">
         <div class="contenedor">
-            <li><button class="btn-2">Crear Incidencia</button></li>
+            <li><button class="btn-2" id="btnFunciones">Crear Incidencia</button></li>
             <li><input type="text" class="btn-2" id="search-input" placeholder="Buscar incidencia" oninput="filterIncidencia()"></li>
             <li><input type="text" class="btn-2" id="search-aula" placeholder="Buscar Aula" oninput="filterAula()"></li>
             <li><select>
                 <option value="">Todos los Estados</option>
-                <option value="">Pendiente</option>
-                <option value="">En proceso</option>
-                <option value="">Resuelta</option>
+                <option value="pendiente">Pendiente</option>
+                <option value="en proceso">En proceso</option>
+                <option value="resuelta">Resuelta</option>
             </select></li>
             <li><select id="prioridad" name="">
                 <option value="">Todas las prioridades</option>
-                <option value="">Baja</option>
-                <option value="">Medio</option>
-                <option value="">Alta</option>
-                <option value="">Urgente</option>
+                <option value="baja">Baja</option>
+                <option value="medio">Medio</option>
+                <option value="alta">Alta</option>
+                <option value="urgente">Urgente</option>
             </select></li>
         </div>
     </section>
 
     <section class="incidencias">
-        <div class="incidencias-container">
-            <div class="card-incidencia">
-                <div class="card-contenido">
+        <div class="overlay" id="overlay">
+            <form id="incidencias-formulario">
+                <select name="aulaId" id="incidencia-aula-select">
+    
+                </select>
+                <input name="responsable" type="text" placeholder="Responsable">
+                <input name="tipo" type="text" placeholder="Tipo">
+                <input name="descripcion" type="text" placeholder="Descripción">
+                <input name="fecha" type="text" placeholder="Fecha">
+                <select name="estado" id="estado">
+                    <option value="pendiente">Pendiente</option>
+                    <option value="proceso">En proceso</option>
+                    <option value="resuelta">Resuelta</option>
+                </select>
+                <select id="prioridad" name="prioridad">
+                    <option value="baja">Baja</option>
+                    <option value="media">Medio</option>
+                    <option value="alta">Alta</option>
+                    <option value="urgente">Urgente</option>
+                </select>
+    
+                <button>Enviar</button>
+            </form>
+        </div>
+        <div class="incidencias-container" id="incidencias-container">
 
-                    <div class="card-campos">
-                        <div class="campo">
-                            <span class="campo-label">Aula</span>
-                            <span class="campo-valor">Aula 12</span>
-                        </div>
-                        <div class="campo">
-                            <span class="campo-label">Responsable</span>
-                            <span class="campo-valor">Martín García</span>
-                        </div>
-                        <div class="campo">
-                            <span class="campo-label">Tipo de problema</span>
-                            <span class="campo-valor">Eléctrico</span>
-                        </div>
-                        <div class="campo">
-                            <span class="campo-label">Prioridad</span>
-                            <span class="campo-valor">Urgente</span>
-                        </div>
-                        <div class="campo">
-                            <span class="campo-label">Fecha</span>
-                            <span class="campo-valor">24 may 2026</span>
-                        </div>
-                        <div class="campo">
-                            <span class="campo-label">Estado</span>
-                            <span class="campo-valor">En progreso</span>
-                        </div>
-                    </div>
-
-
-                    <div class="card-descripcion">
-                        <span class="campo-label">Descripción</span>
-                        <p>Se detectó un corte de luz en el tablero principal. Los tomacorrientes de la pared trasera no funcionan y el proyector no enciende.</p>
-                    </div>
-
-                </div>
-
-                <div class="card-acciones">
-                    <button onclick="editarIncidencia()">Editar</button>
-                    <button onclick="eliminarIncidencia()">Eliminar</button>
-                    <button onclick="cambiarEstado()">Cambiar estado</button>
-                </div>
-
-            </div>
         </div>
     </section>    
     

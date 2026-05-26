@@ -22,12 +22,25 @@
     </header>
     <section class="funcionalidades">
         <div class="contenedor">
-            <li><button class="btn-2">Crear Reserva</button></li>
+            <li><button class="btn-2" id="btnFunciones">Crear Reserva</button></li>
         </div>
     </section>
 
     <section class="reservas">
-        <div class="reservas-container">
+        <div class="overlay" id="overlay">
+            <form id="reservas-formulario" class="menu">
+                <select name="aulaId" id="reservas-aula-select"></select>
+    
+                <input name="docente" type="text" placeholder="Nombre del docente">
+                <input name="curso" type="text" placeholder="Nombre del curso">
+                <input name="fecha" type="text" placeholder="Fecha de reserva">
+                <input name="hora" type="text" placeholder="Hora de reserva">
+                <input name="motivo" type="text" placeholder="Motivo de la reserva">
+    
+                <button>Enviar</button>
+            </form>
+        </div>
+        <div class="reservas-container" id="reservas-container">
             <div class="card-reservas">
                 <div class="card-contenido">
 

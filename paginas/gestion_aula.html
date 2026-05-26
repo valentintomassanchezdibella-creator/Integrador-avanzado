@@ -22,54 +22,38 @@
     </header>
     <section class="funcionalidades">
         <div class="contenedor">
-            <li><button class="btn-2">Crear Aula</button></li>
+            <li><button class="btn-2" id="btnFunciones">Crear Aula</button></li>
             <li><input type="text" class="btn-2" id="search-input" placeholder="Buscar Aula" oninput="filterAula()"></li>
             <li><select>
                 <option value="">Todas las Aulas</option>
-                <option value="">Aulas Disponibles</option>
-                <option value="">Aulas Ocupadas</option>
-                <option value="">Aulas con Incidencias Críticas.</option>
+                <option value="disponible">Aulas Disponibles</option>
+                <option value="ocupada">Aulas Ocupadas</option>
+                <option value="incidenciasCriticas">Aulas con Incidencias Críticas.</option>
             </select></li>
         </div>
     </section>
 
     <section class="gestion-aula">
-        <div class="gestion-aula-container">
-            <div class="card-gestion-aula">
-                <div class="card-contenido">
-
-                    <div class="card-campos">
-                        <div class="campo">
-                            <span class="campo-label">Nombre</span>
-                            <span class="campo-valor">Aula 8</span>
-                        </div>
-                        <div class="campo">
-                            <span class="campo-label">Capacidad</span>
-                            <span class="campo-valor">40 alumnos</span>
-                        </div>
-                        <div class="campo">
-                            <span class="campo-label">Cantidad de PCs</span>
-                            <span class="campo-valor">20</span>
-                        </div>
-                        <div class="campo">
-                            <span class="campo-label">Estado General</span>
-                            <span class="campo-valor">Bueno</span>
-                        </div>
-                        <div class="campo">
-                            <span class="campo-label">Disponibilidad</span>
-                            <span class="campo-valor">7:40-12:00, 13:30-15:30</span>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="card-acciones">
-                    <button onclick="editarTarea()">Editar</button>
-                    <button onclick="eliminarTarea()">Eliminar</button>
-                </div>
-
-            </div>
-
+        <div class="overlay" id="overlay">
+            <form id="aulas-formulario" class="menu">
+                <input name="nombre" type="text" placeholder="Nombre de la aula">
+                <input name="capacidad" type="text" placeholder="Capacidad">
+                <input name="cantidad" type="text" placeholder="Cantidad">
+                <select name="estado" id="estado">
+                    <option value="disponible">Disponible</option>
+                    <option value="ocupado">Ocupada</option>
+                </select>
+                <select id="prioridad" name="disponibilidad">
+                    <option value="baja">Baja</option>
+                    <option value="media">Medio</option>
+                    <option value="alta">Alta</option>
+                    <option value="urgente">Urgente</option>
+                </select>
+    
+                <button>Enviar</button>
+            </form>
+        </div>
+        <div class="gestion-aula-container" id="aulas-container">
             
         </div>
     </section>

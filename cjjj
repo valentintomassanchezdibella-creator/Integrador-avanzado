@@ -1,0 +1,452 @@
+// ===========================
+// DATOS
+// ===========================
+
+let aulas       = JSON.parse(localStorage.getItem("aulas"))       || [];
+let reservas    = JSON.parse(localStorage.getItem("reservas"))    || [];
+let incidencias = JSON.parse(localStorage.getItem("incidencias")) || [];
+
+let incidenciaEditando = null;
+let aulasEditando      = null;
+let reservasEditando   = null;
+
+// ===========================
+// INIT
+// ===========================
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    // cada render solo corre si el contenedor existe en esta página
+    if (document.getElementById("incidencias-container")) {
+        RenderizarSelectAulas();
+        RenderizarIncidencias(incidencias);
+        IniciarFormularioIncidencias();
+        IniciarFiltrosIncidencias();
+    }
+
+    if (document.getElementById("aulas-container")) {
+        RenderizarAulas(aulas);
+        IniciarFormularioAulas();
+        IniciarFiltrosAulas();
+    }
+
+    if (document.getElementById("reservas-container")) {
+        RenderizarSelectAulas();
+        RenderizarReservas(reservas);
+        IniciarFormularioReservas();
+    }
+
+});
+
+// ===========================
+// GUARDAR
+// ===========================
+
+function Guardar(clave, datos) {
+    localStorage.setItem(clave, JSON.stringify(datos));
+}
+
+// ===========================
+// INCIDENCIAS
+// ===========================
+
+function IniciarFormularioIncidencias() {
+    const form = document.getElementById("incidencias-formulario");
+    if (!form) return;
+
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const datos = Object.fromEntries(new FormData(form).entries());
+
+        if (datos.descripcion.length < 10) {
+            alert("La descripción debe tener al menos 10 caracteres");
+            return;
+        }
+
+        if (incidenciaEditando) {
+            const incidencia = incidencias.find(i => i.id == incidenciaEditando);
+            Object.assign(incidencia, datos);
+            incidenciaEditando = null;
+        } else {
+            datos.id = Date.now();
+            incidencias.push(datos);
+        }
+
+        Guardar("incidencias", incidencias);
+        RenderizarIncidencias(incidencias);
+        form.reset();
+    });
+}
+
+function RenderizarIncidencias(array) {
+    const contenedor = document.getElementById("incidencias-container");
+    if (!contenedor) return;
+
+    contenedor.innerHTML = "";
+
+    array.forEach((i) => {
+        const aula = aulas.find(a => a.id == i.aulaId);
+
+        contenedor.innerHTML += `
+        <div class="card-incidencia">
+            <div class="card-contenido">
+                <div class="card-campos">
+                    <div class="campo">
+                        <span class="campo-label">Aula</span>
+                        <span class="campo-valor">${aula ? aula.nombre : "Sin aula"}</span>
+                    </div>
+                    <div class="campo">
+                        <span class="campo-label">Responsable</span>
+                        <span class="campo-valor">${i.responsable}</span>
+                    </div>
+                    <div class="campo">
+                        <span class="campo-label">Tipo de problema</span>
+                        <span class="campo-valor">${i.tipo}</span>
+                    </div>
+                    <div class="campo">
+                        <span class="campo-label">Prioridad</span>
+                        <span class="campo-valor">${i.prioridad}</span>
+                    </div>
+                    <div class="campo">
+                        <span class="campo-label">Fecha</span>
+                        <span class="campo-valor">${i.fecha}</span>
+                    </div>
+                    <div class="campo">
+                        <span class="campo-label">Estado</span>
+                        <span class="campo-valor">${i.estado}</span>
+                    </div>
+                </div>
+                <div class="card-descripcion">
+                    <span class="campo-label">Descripción</span>
+                    <p>${i.descripcion}</p>
+                </div>
+            </div>
+            <div class="card-acciones">
+                <button onclick="EditarIncidencia(${i.id})">Editar</button>
+                <button onclick="EliminarIncidencia(${i.id})">Eliminar</button>
+                <button onclick="CambiarEstadoIncidencia(${i.id})">Cambiar estado</button>
+            </div>
+        </div>`;
+    });
+}
+
+function EliminarIncidencia(id) {
+    incidencias = incidencias.filter(i => Number(i.id) !== Number(id));
+    Guardar("incidencias", incidencias);
+    RenderizarIncidencias(incidencias);
+}
+
+function EditarIncidencia(id) {
+    const incidencia = incidencias.find(i => i.id == id);
+    const form = document.getElementById("incidencias-formulario");
+    if (!incidencia || !form) return;
+
+    incidenciaEditando = id;
+    form.aulaId.value      = incidencia.aulaId;
+    form.responsable.value = incidencia.responsable;
+    form.tipo.value        = incidencia.tipo;
+    form.fecha.value       = incidencia.fecha;
+    form.descripcion.value = incidencia.descripcion;
+    form.estado.value      = incidencia.estado;
+    form.prioridad.value   = incidencia.prioridad;
+}
+
+function CambiarEstadoIncidencia(id) {
+    const incidencia = incidencias.find(i => i.id == id);
+    if (!incidencia) return;
+
+    const estados = ["pendiente", "en proceso", "resuelta"];
+    const actual  = estados.indexOf(incidencia.estado);
+    incidencia.estado = estados[(actual + 1) % estados.length];
+
+    Guardar("incidencias", incidencias);
+    RenderizarIncidencias(incidencias);
+}
+
+function IniciarFiltrosIncidencias() {
+    const searchInput    = document.getElementById("search-input");
+    const searchAula     = document.getElementById("search-aula");
+    const filtroEstado   = document.getElementById("filtro-estado");
+    const filtroPrioridad = document.getElementById("filtro-prioridad");
+
+    const filtrar = () => {
+        const texto     = searchInput?.value.toLowerCase()    || "";
+        const textoAula = searchAula?.value.toLowerCase()     || "";
+        const estado    = filtroEstado?.value                 || "";
+        const prioridad = filtroPrioridad?.value              || "";
+
+        const resultado = incidencias.filter(i => {
+            const aula = aulas.find(a => a.id == i.aulaId);
+            const nombreAula = aula ? aula.nombre.toLowerCase() : "";
+
+            return (!texto     || i.responsable.toLowerCase().includes(texto) || i.descripcion.toLowerCase().includes(texto))
+                && (!textoAula || nombreAula.includes(textoAula))
+                && (!estado    || i.estado === estado)
+                && (!prioridad || i.prioridad === prioridad);
+        });
+
+        RenderizarIncidencias(resultado);
+    };
+
+    searchInput?.addEventListener("input", filtrar);
+    searchAula?.addEventListener("input", filtrar);
+    filtroEstado?.addEventListener("change", filtrar);
+    filtroPrioridad?.addEventListener("change", filtrar);
+}
+
+// ===========================
+// AULAS
+// ===========================
+
+function IniciarFormularioAulas() {
+    const form = document.getElementById("aulas-formulario");
+    if (!form) return;
+
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const datos = Object.fromEntries(new FormData(form).entries());
+
+        if (aulasEditando) {
+            const aula = aulas.find(a => a.id == aulasEditando);
+            Object.assign(aula, datos);
+            aulasEditando = null;
+        } else {
+            datos.id = Date.now();
+            aulas.push(datos);
+        }
+
+        Guardar("aulas", aulas);
+        RenderizarAulas(aulas);
+        RenderizarSelectAulas();
+        form.reset();
+    });
+}
+
+function RenderizarAulas(array) {
+    const contenedor = document.getElementById("aulas-container");
+    if (!contenedor) return;
+
+    contenedor.innerHTML = "";
+
+    array.forEach((aula) => {
+        const incidenciasCriticas = incidencias.filter(
+            i => i.aulaId == aula.id && i.prioridad == "urgente"
+        );
+
+        contenedor.innerHTML += `
+        <div class="card-gestion-aula">
+            <div class="card-contenido">
+                <div class="card-campos">
+                    <div class="campo">
+                        <span class="campo-label">Nombre</span>
+                        <span class="campo-valor">${aula.nombre}</span>
+                    </div>
+                    <div class="campo">
+                        <span class="campo-label">Capacidad</span>
+                        <span class="campo-valor">${aula.capacidad}</span>
+                    </div>
+                    <div class="campo">
+                        <span class="campo-label">Cantidad de PCs</span>
+                        <span class="campo-valor">${aula.cantidad}</span>
+                    </div>
+                    <div class="campo">
+                        <span class="campo-label">Estado</span>
+                        <span class="campo-valor">${aula.estado}</span>
+                    </div>
+                    <div class="campo">
+                        <span class="campo-label">Incidencias críticas</span>
+                        <span class="campo-valor">${incidenciasCriticas.length > 0 ? "Sí" : "No"}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-acciones">
+                <button onclick="EditarAula(${aula.id})">Editar</button>
+                <button onclick="EliminarAula(${aula.id})">Eliminar</button>
+            </div>
+        </div>`;
+    });
+}
+
+function EliminarAula(id) {
+    aulas = aulas.filter(a => Number(a.id) !== Number(id));
+    Guardar("aulas", aulas);
+    RenderizarAulas(aulas);
+    RenderizarSelectAulas();
+}
+
+function EditarAula(id) {
+    const aula = aulas.find(a => a.id == id);
+    const form = document.getElementById("aulas-formulario");
+    if (!aula || !form) return;
+
+    aulasEditando      = id;
+    form.nombre.value  = aula.nombre;
+    form.capacidad.value = aula.capacidad;
+    form.cantidad.value  = aula.cantidad;
+    form.estado.value    = aula.estado;
+}
+
+function IniciarFiltrosAulas() {
+    const searchInput  = document.getElementById("search-input");
+    const filtroEstado = document.getElementById("filtro-estado-aula");
+
+    const filtrar = () => {
+        const texto  = searchInput?.value.toLowerCase() || "";
+        const estado = filtroEstado?.value              || "";
+
+        const resultado = aulas.filter(a =>
+            (!texto  || a.nombre.toLowerCase().includes(texto))
+         && (!estado || a.estado === estado)
+        );
+
+        RenderizarAulas(resultado);
+    };
+
+    searchInput?.addEventListener("input", filtrar);
+    filtroEstado?.addEventListener("change", filtrar);
+}
+
+// ===========================
+// RESERVAS
+// ===========================
+
+function IniciarFormularioReservas() {
+    const form = document.getElementById("reservas-formulario");
+    if (!form) return;
+
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const datos = Object.fromEntries(new FormData(form).entries());
+        const aula  = aulas.find(a => a.id == datos.aulaId);
+
+        if (!aula) {
+            alert("Seleccioná un aula válida");
+            return;
+        }
+
+        const incidenciasCriticas = incidencias.filter(
+            i => i.aulaId == aula.id && i.prioridad == "urgente"
+        );
+
+        if (incidenciasCriticas.length > 0) {
+            alert("El aula tiene incidencias críticas, seleccioná otra");
+            return;
+        }
+
+        if (aula.estado == "ocupado") {
+            alert("El aula está ocupada, seleccioná otra");
+            return;
+        }
+
+        if (reservasEditando) {
+            const reserva = reservas.find(r => r.id == reservasEditando);
+            Object.assign(reserva, datos);
+            reservasEditando = null;
+        } else {
+            const duplicada = reservas.find(r =>
+                r.aulaId == datos.aulaId &&
+                r.fecha  == datos.fecha  &&
+                r.hora   == datos.hora
+            );
+
+            if (duplicada) {
+                alert("Ya existe una reserva para ese aula, fecha y hora");
+                return;
+            }
+
+            datos.id = Date.now();
+            reservas.push(datos);
+        }
+
+        Guardar("reservas", reservas);
+        RenderizarReservas(reservas);
+        form.reset();
+    });
+}
+
+function RenderizarReservas(array) {
+    const contenedor = document.getElementById("reservas-container");
+    if (!contenedor) return;
+
+    contenedor.innerHTML = "";
+
+    array.forEach((r) => {
+        const aula = aulas.find(a => a.id == r.aulaId);
+
+        contenedor.innerHTML += `
+        <div class="card-reservas">
+            <div class="card-contenido">
+                <div class="card-campos">
+                    <div class="campo">
+                        <span class="campo-label">Docente</span>
+                        <span class="campo-valor">${r.docente}</span>
+                    </div>
+                    <div class="campo">
+                        <span class="campo-label">Curso</span>
+                        <span class="campo-valor">${r.curso}</span>
+                    </div>
+                    <div class="campo">
+                        <span class="campo-label">Aula</span>
+                        <span class="campo-valor">${aula ? aula.nombre : "Sin aula"}</span>
+                    </div>
+                    <div class="campo">
+                        <span class="campo-label">Fecha</span>
+                        <span class="campo-valor">${r.fecha}</span>
+                    </div>
+                    <div class="campo">
+                        <span class="campo-label">Horario</span>
+                        <span class="campo-valor">${r.hora}</span>
+                    </div>
+                </div>
+                <div class="card-descripcion">
+                    <span class="campo-label">Motivo</span>
+                    <p>${r.motivo}</p>
+                </div>
+            </div>
+            <div class="card-acciones">
+                <button onclick="EditarReserva(${r.id})">Editar</button>
+                <button onclick="EliminarReserva(${r.id})">Eliminar</button>
+            </div>
+        </div>`;
+    });
+}
+
+function EliminarReserva(id) {
+    reservas = reservas.filter(r => Number(r.id) !== Number(id));
+    Guardar("reservas", reservas);
+    RenderizarReservas(reservas);
+}
+
+function EditarReserva(id) {
+    const reserva = reservas.find(r => r.id == id);
+    const form    = document.getElementById("reservas-formulario");
+    if (!reserva || !form) return;
+
+    reservasEditando     = id;
+    form.docente.value   = reserva.docente;
+    form.curso.value     = reserva.curso;
+    form.aulaId.value    = reserva.aulaId;
+    form.fecha.value     = reserva.fecha;
+    form.hora.value      = reserva.hora;
+    form.motivo.value    = reserva.motivo;
+}
+
+// ===========================
+// UTILS
+// ===========================
+
+function RenderizarSelectAulas() {
+    const selectIncidencia = document.getElementById("incidencia-aula-select");
+    const selectReserva    = document.getElementById("reservas-aula-select");
+
+    [selectIncidencia, selectReserva].forEach(select => {
+        if (!select) return;
+        select.innerHTML = `<option value="">Seleccionar aula</option>`;
+        aulas.forEach(a => {
+            select.innerHTML += `<option value="${a.id}">${a.nombre}</option>`;
+        });
+    });
+}
