@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <section>
+        <div class="incidencias">
+            <form id="incidencias-formulario">
+                <select name="aulaId" id="incidencia-aula-select">
+
+                </select>
+                <input name="responsable" type="text" placeholder="Responsable">
+                <input name="tipo" type="text" placeholder="Tipo">
+                <input name="descripcion" type="text" placeholder="Descripción">
+                <input name="fecha" type="text" placeholder="Fecha">
+                <select name="estado" id="estado">
+                    <option value="pendiente">Pendiente</option>
+                    <option value="proceso">En proceso</option>
+                    <option value="resuelta">Resuelta</option>
+                </select>
+                <select id="prioridad" name="prioridad">
+                    <option value="baja">Baja</option>
+                    <option value="media">Medio</option>
+                    <option value="alta">Alta</option>
+                    <option value="urgente">Urgente</option>
+                </select>
+    
+                <button>Enviar</button>
+            </form>
+            <div class="incidencias-container" id="incidencias-container"></div>
+        </div>
+
+        <div class="aulas">
+            <form id="aulas-formulario">
+                <input name="nombre" type="text" placeholder="Nombre de la aula">
+                <input name="capacidad" type="text" placeholder="Capacidad">
+                <input name="cantidad" type="text" placeholder="Cantidad">
+                <select name="estado" id="estado">
+                    <option value="disponible">Disponible</option>
+                    <option value="ocupado">Ocupada</option>
+                </select>
+                <select id="prioridad" name="disponibilidad">
+                    <option value="baja">Baja</option>
+                    <option value="media">Medio</option>
+                    <option value="alta">Alta</option>
+                    <option value="urgente">Urgente</option>
+                </select>
+    
+                <button>Enviar</button>
+            </form>
+            <div class="aulas-container" id="aulas-container"></div>
+        </div>
+
+        
+        <div class="reservas">
+            <form id="reservas-formulario">
+                <select name="aulaId" id="reservas-aula-select"></select>
+
+                <input name="docente" type="text" placeholder="Nombre del docente">
+                <input name="curso" type="text" placeholder="Nombre del curso">
+                <input name="fecha" type="text" placeholder="Fecha de reserva">
+                <input name="hora" type="text" placeholder="Hora de reserva">
+                <input name="motivo" type="text" placeholder="Motivo de la reserva">
+    
+                <button>Enviar</button>
+            </form>
+            <div class="reservas-container" id="reservas-container"></div>
+        </div>
+
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
