@@ -1,9 +1,11 @@
-const btnFunciones = document.getElementById('btnFunciones');
-const reservasFormulario = document.getElementById('overlay');
-
-btnFunciones.addEventListener('click', () => {
-    reservasFormulario.classList.toggle('active');
-});
+if (!document.getElementById("estadisticas-container")){
+    const btnFunciones = document.getElementById('btnFunciones');
+    const reservasFormulario = document.getElementById('overlay');
+    
+    btnFunciones.addEventListener('click', () => {
+        reservasFormulario.classList.toggle('active');
+    });
+}
 
 
 let aulas = JSON.parse(localStorage.getItem("aulas")) || [];
@@ -300,6 +302,18 @@ function EditarIncidencia(id){
     }
 }
 
+function CambiarEstadoIncidencia(id) {
+    const incidencia = incidencias.find(i => i.id == id);
+
+    const estados = ["pendiente", "en proceso", "resuelta"];
+    const actual  = estados.indexOf(incidencia.estado);
+    incidencia.estado = estados[(actual + 1) % estados.length];
+
+    localStorage.setItem("incidencias", JSON.stringify(incidencias));
+
+    RenderizarIncidencias(incidencias);
+}
+
 function RenderizarSelectAulas(){
     if (document.getElementById("incidencia-aula-select")){
         const selectIncidenciaAula = document.getElementById("incidencia-aula-select");
@@ -529,23 +543,37 @@ function RenderizarTareas(array){
         contenedorTareas.innerHTML += `
         <div class="card-tarea">
             <div class="card-contenido">
+                <div class="card-descripcion">
+                    <span class="campo-label">Descripción</span>
+                    <p>${tarea.descripcion}</p>
+                </div>
                 <div class="card-campos">
                     <div class="campo">
-                        <span class="campo-label">Título</span>
-                        <span class="campo-valor">${tarea.titulo}</span>
+                        <span class="campo-label">Responsable</span>
+                        <span class="campo-valor">${tarea.responsable}</span>
                     </div>
                     <div class="campo">
-                        <span class="campo-label">Descripción</span>
-                        <span class="campo-valor">${tarea.descripcion}</span>
+                        <span class="campo-label">Prioridad</span>
+                        <span class="campo-valor">${tarea.prioridad}</span>
                     </div>
                     <div class="campo">
                         <span class="campo-label">Fecha Límite</span>
-                        <span class="campo-valor">${tarea.fechaLimite}</span>
+                        <span class="campo-valor">${tarea.fecha}</span>
+                    </div>
+                    <div class="campo">
+                        <span class="campo-label">Estado</span>
+                        <span class="campo-valor">${tarea.estado}</span>
                     </div>
                 </div>
-                <div class="card-acciones">
-                    <button onclick="EditarTarea(${tarea.id})">Editar</button>
-                    <button onclick="EliminarTarea(${tarea.id})">Eliminar</button>
+            </div>
+            <div class="card-acciones">
+                <div class="izquierda">
+                    <button class="pointer" onclick="EditarTarea(${tarea.id})">Editar</button>
+                    <button class="no-pointer">Marcar como Completada</button>
+                    <button class="pointer" onclick="EliminarTarea(${tarea.id})">Eliminar</button>
+                </div>
+                <div class="derecha">
+                    <input type="checkbox" ${tarea.completada ? "checked" : ""} onclick="MarcarCompletada(${tarea.id})"
                 </div>
             </div>
         </div>`;
@@ -557,7 +585,7 @@ function EliminarTarea(id){
 
     localStorage.setItem("tareas", JSON.stringify(tareas))
 
-    renderizarTareas(tareas);
+    RenderizarTareas(tareas);
 }
 
 function EditarTarea(id){
@@ -568,8 +596,96 @@ function EditarTarea(id){
     if(tarea){
         tareasEditando = id;
 
-        formularioTareas.titulo.value = tarea.titulo;
+        formularioTareas.responsable.value = tarea.responsable;
         formularioTareas.descripcion.value = tarea.descripcion;
-        formularioTareas.fechaLimite.value = tarea.fechaLimite;
+        formularioTareas.fecha.value = tarea.fecha;
+        formularioTareas.prioridad.value = tarea.prioridad;
+        formularioTareas.estado.value = tarea.estado;
     }
+}
+
+function MarcarCompletada(id) {
+    const tarea = tareas.find(t => t.id == id);
+
+    tarea.completada = !tarea.completada;
+    tarea.estado = tarea.completada ? "resuelta" : "en proceso";
+
+    localStorage.setItem("tareas", JSON.stringify(tareas))
+
+    RenderizarTareas(tareas);
+}
+
+function FiltrarEstadoTarea(){
+    const estadoSeleccionado = document.getElementById("tarea-estado-filtro").value;
+
+    if(estadoSeleccionado == ""){
+        RenderizarTareas(tareas);
+        return;
+    }
+
+    const tareasFiltradas = tareas.filter(t => t.estado == estadoSeleccionado);
+
+    RenderizarTareas(tareasFiltradas);
+}
+
+function FiltrarPrioridadTarea(){
+    const prioridadSeleccionada = document.getElementById("tarea-prioridad-filtro").value;
+
+    if(prioridadSeleccionada == ""){
+        RenderizarTareas(tareas);
+        return;
+    }
+
+    const tareasFiltradas = tareas.filter(i => i.prioridad == prioridadSeleccionada);
+
+    RenderizarTareas(tareasFiltradas);
+}
+
+function FiltrarVencidaTarea(){
+    const vencidaSeleccionada = document.getElementById("tarea-vencida-filtro").value;
+
+    if(vencidaSeleccionada == ""){
+        RenderizarTareas(tareas);
+        return;
+    }
+
+    const tareasFiltradas = tareas.filter(t => t.prioridad == vencidaSeleccionada);
+
+    RenderizarTareas(tareasFiltradas);
+}
+
+
+if (document.getElementById("estadisticas-container")){
+    const total = incidencias.length;
+    const pendiente = incidencias.filter( i => i.estado != "resuelta").length;
+    const resuelta = incidencias.filter( i => i.estado == "resuelta").length;
+    const urgente = incidencias.filter( i => i.prioridad == "urgente").length;
+    
+    let fueraDeServicio = 0;
+    aulas.forEach((a) => { 
+        const fueraDeServicioAux = incidencias.some(i => i.aulaId == a.id && i.prioridad == "urgente");
+        if (fueraDeServicioAux){
+            fueraDeServicio++
+        }
+    });
+
+    const resolucion = (resuelta * 100)/total;
+
+    let aulaMayor = null;
+    let mayorIncidencias = 0;
+    aulas.forEach((a) => { 
+        const cantidad = incidencias.filter(i => i.aulaId == a.id).length;
+        if (cantidad > mayorIncidencias){
+            aulaMayor = a.nombre;
+            mayorIncidencias = cantidad;
+        }
+    });
+    
+    document.getElementById('total').textContent = total;
+    document.getElementById('pendientes').textContent = pendiente;
+    document.getElementById('resueltas').textContent = resuelta;
+    document.getElementById('urgentes').textContent = urgente;
+    document.getElementById('fuera-de-servicio').textContent = fueraDeServicio;
+    document.getElementById('resolucion').textContent = resolucion.toFixed(2) + "%";
+    document.getElementById('mayor-incidencia').textContent = aulaMayor + " con " + mayorIncidencias + " incidencias";
 }

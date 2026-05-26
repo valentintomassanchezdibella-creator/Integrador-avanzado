@@ -23,15 +23,13 @@
     <section class="funcionalidades">
         <div class="contenedor">
             <li><button class="btn-2" id="btnFunciones">Crear Incidencia</button></li>
-            <li><input type="text" class="btn-2" id="search-input" placeholder="Buscar incidencia" oninput="filterIncidencia()"></li>
-            <li><input type="text" class="btn-2" id="search-aula" placeholder="Buscar Aula" oninput="filterAula()"></li>
             <li><select id="incidencia-estado-filtro" onchange="FiltrarEstadoIncidencia()">
                 <option value="">Todos los Estados</option>
                 <option value="pendiente">Pendiente</option>
                 <option value="proceso">En proceso</option>
                 <option value="resuelta">Resuelta</option>
             </select></li>
-            <li><select name="prioridad" id="incidencia-prioridad-filtro" onchange="FiltrarPrioridadIncidencia()">
+            <li><select id="incidencia-prioridad-filtro" onchange="FiltrarPrioridadIncidencia()">
                 <option value="">Todas las prioridades</option>
                 <option value="baja">Baja</option>
                 <option value="medio">Medio</option>
@@ -50,7 +48,7 @@
                 <input name="responsable" type="text" placeholder="Responsable">
                 <input name="tipo" type="text" placeholder="Tipo">
                 <input name="descripcion" type="text" placeholder="Descripción">
-                <input name="fecha" type="text" placeholder="Fecha">
+                <input name="fecha" type="date" placeholder="Fecha">
                 <select name="estado" id="estado">
                     <option value="pendiente">Pendiente</option>
                     <option value="proceso">En proceso</option>
