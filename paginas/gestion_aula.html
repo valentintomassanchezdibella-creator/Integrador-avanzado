@@ -24,10 +24,10 @@
         <div class="contenedor">
             <li><button class="btn-2" id="btnFunciones">Crear Aula</button></li>
             <li><input type="text" class="btn-2" id="search-input" placeholder="Buscar Aula" oninput="filterAula()"></li>
-            <li><select>
+            <li><select name="" id="aula-estado-filtro" onchange="FiltrarEstadoAula()">
                 <option value="">Todas las Aulas</option>
                 <option value="disponible">Aulas Disponibles</option>
-                <option value="ocupada">Aulas Ocupadas</option>
+                <option value="fueraServicio">Aulas Fuera de Servicio</option>
                 <option value="incidenciasCriticas">Aulas con Incidencias Críticas.</option>
             </select></li>
         </div>
@@ -41,7 +41,7 @@
                 <input name="cantidad" type="text" placeholder="Cantidad">
                 <select name="estado" id="estado">
                     <option value="disponible">Disponible</option>
-                    <option value="ocupado">Ocupada</option>
+                    <option value="fueraServicio">Fuera de Servicio</option>
                 </select>
                 <select id="prioridad" name="disponibilidad">
                     <option value="baja">Baja</option>

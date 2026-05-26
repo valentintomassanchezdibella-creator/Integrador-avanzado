@@ -25,13 +25,13 @@
             <li><button class="btn-2" id="btnFunciones">Crear Incidencia</button></li>
             <li><input type="text" class="btn-2" id="search-input" placeholder="Buscar incidencia" oninput="filterIncidencia()"></li>
             <li><input type="text" class="btn-2" id="search-aula" placeholder="Buscar Aula" oninput="filterAula()"></li>
-            <li><select>
+            <li><select id="incidencia-estado-filtro" onchange="FiltrarEstadoIncidencia()">
                 <option value="">Todos los Estados</option>
                 <option value="pendiente">Pendiente</option>
-                <option value="en proceso">En proceso</option>
+                <option value="proceso">En proceso</option>
                 <option value="resuelta">Resuelta</option>
             </select></li>
-            <li><select id="prioridad" name="">
+            <li><select name="prioridad" id="incidencia-prioridad-filtro" onchange="FiltrarPrioridadIncidencia()">
                 <option value="">Todas las prioridades</option>
                 <option value="baja">Baja</option>
                 <option value="medio">Medio</option>

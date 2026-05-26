@@ -46,10 +46,19 @@ document.addEventListener("DOMContentLoaded", () => {
         
             const datos = Object.fromEntries(formData.entries());
 
+            const aulaFuera = aulas.find(a => a.id == datos.aulaId && a.estado == "fueraServicio");
+
+            if(aulaFuera){
+                alert("No se pueden crear incidencias para aulas fuera de servicio");
+                return;
+            }
+
             if(!datos.aulaId || !datos.responsable || !datos.tipo || !datos.prioridad || !datos.fecha || !datos.descripcion || !datos.estado){
                 alert("Por favor, complete todos los campos");
                 return;
             }
+
+            
         
             if(datos.descripcion.length < 10){
                 alert("La descripción debe tener al menos 10 caracteres");
@@ -324,6 +333,32 @@ function RenderizarSelectAulas(){
     }
 }
 
+function FiltrarEstadoIncidencia(){
+    const estadoSeleccionado = document.getElementById("incidencia-estado-filtro").value;
+
+    if(estadoSeleccionado == ""){
+        RenderizarIncidencias(incidencias);
+        return;
+    }
+
+    const incidenciasFiltradas = incidencias.filter(i => i.estado == estadoSeleccionado);
+
+    RenderizarIncidencias(incidenciasFiltradas);
+}
+
+function FiltrarPrioridadIncidencia(){
+    const prioridadSeleccionada = document.getElementById("incidencia-prioridad-filtro").value;
+
+    if(prioridadSeleccionada == ""){
+        RenderizarIncidencias(incidencias);
+        return;
+    }
+
+    const incidenciasFiltradas = incidencias.filter(i => i.prioridad == prioridadSeleccionada);
+
+    RenderizarIncidencias(incidenciasFiltradas);
+}
+
 
 // Aulas
 
@@ -395,6 +430,19 @@ function EditarAula(id){
         formularioAulas.cantidad.value = aula.cantidad;
         formularioAulas.estado.value = aula.estado;
     }
+}
+
+function FiltrarEstadoAula(){
+    const estadoSeleccionado = document.getElementById("aula-estado-filtro").value;
+
+    if(estadoSeleccionado == ""){
+        RenderizarAulas(aulas);
+        return;
+    }
+
+    const aulasFiltradas = aulas.filter(a => a.estado == estadoSeleccionado);
+
+    RenderizarAulas(aulasFiltradas);
 }
 
 //Reservas
