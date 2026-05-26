@@ -1,3 +1,18 @@
+let aulas = JSON.parse(localStorage.getItem("aulas")) || [];
+
+
+const formularioAulas = document.getElementById("aulas-formulario")
+
+let aulasEditando = null;
+
+
+let reservas = JSON.parse(localStorage.getItem("reservas")) || [];
+
+const formularioReservas = document.getElementById("reservas-formulario");
+
+let reservasEditando = null;
+
+
 let incidencias =
     JSON.parse(localStorage.getItem("incidencias")) || [];
 
@@ -5,8 +20,13 @@ const formularioIncidencias = document.getElementById("incidencias-formulario");
 
 let incidenciaEditando = null;
 
-RenderizarIncidencias(incidencias);
 
+document.addEventListener("DOMContentLoaded", () => {
+    RenderizarSelectAulas();
+    RenderizarIncidencias(incidencias);
+    RenderizarAulas(aulas);
+    RenderizarReservas(reservas);
+});
 
 
 formularioIncidencias.addEventListener("submit", (e) => {
@@ -97,7 +117,7 @@ function EditarIncidencia(id){
     if(incidencia){
         incidenciaEditando = id;
 
-        formularioIncidencias.aula.value = incidencia.aula;
+        formularioIncidencias.aulaId.value = incidencia.aulaId;
         formularioIncidencias.responsable.value = incidencia.responsable;
         formularioIncidencias.tipo.value = incidencia.tipo;
         formularioIncidencias.fecha.value = incidencia.fecha;
@@ -137,15 +157,7 @@ function RenderizarSelectAulas(){
 
 // Aulas
 
-let aulas = JSON.parse(localStorage.getItem("aulas")) || [];
 
-RenderizarSelectAulas();
-
-const formularioAulas = document.getElementById("aulas-formulario")
-
-let aulasEditando = null;
-
-RenderizarAulas(aulas);
 
 
 formularioAulas.addEventListener("submit", (e) => {
@@ -185,7 +197,7 @@ function RenderizarAulas(array){
 
     array.forEach((aula) => {
 
-    const incidenciasCriticas = incidencias.filter(i => i.aulaId == datosReservas.aulaId && i.prioridad == "urgente");
+    const incidenciasCriticas = incidencias.filter(i => i.aulaId == aula.id && i.prioridad == "urgente");
 
     contenedorAulas.innerHTML += `
     
@@ -239,13 +251,7 @@ function EditarAula(id){
 
 //Reservas
 
-let reservas = JSON.parse(localStorage.getItem("reservas")) || [];
 
-const formularioReservas = document.getElementById("reservas-formulario");
-
-let reservasEditando = null;
-
-RenderizarReservas(reservas);
 
 formularioReservas.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -256,8 +262,9 @@ formularioReservas.addEventListener("submit", (e) => {
 
     const aula = aulas.find(a => a.id == datosReservas.aulaId);
 
+    const incidenciasCriticas = incidencias.filter(i => i.aulaId == aula.id && i.prioridad == "urgente");
 
-    if(incidenciasCriticas){
+    if(incidenciasCriticas.length > 0){
         alert("El aula seleccionada tiene incidencias críticas, por favor selecciona otra");
         return;
     }
@@ -302,8 +309,6 @@ function RenderizarReservas(array){
 
     array.forEach((reserva) => {
 
-    const incidenciaCritica = incidencias.find(i => i.aulaId == reserva.aulaId && i.prioridad == "urgente");
-
     contenedorReservas.innerHTML += `
     
     <div class="card">
@@ -316,7 +321,7 @@ function RenderizarReservas(array){
 
         <span>cantidad: ${reserva.fecha}</span>
 
-        <span>Estado: ${reserva.hora}</span>
+        <span>Horario: ${reserva.hora}</span>
 
         <p>${reserva.motivo}</p>
 
@@ -353,3 +358,4 @@ function EditarReserva(id){
         formularioReservas.motivo.value = reserva.motivo;
     }
 }
+
