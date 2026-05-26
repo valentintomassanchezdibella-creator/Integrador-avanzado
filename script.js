@@ -27,6 +27,13 @@ const formularioIncidencias = document.getElementById("incidencias-formulario");
 let incidenciaEditando = null;
 
 
+let tareas = JSON.parse(localStorage.getItem("tareas")) || [];
+
+const formularioTareas = document.getElementById("tareas-formulario");
+
+let tareasEditando = null;
+
+
 document.addEventListener("DOMContentLoaded", () => {
     if (document.getElementById("incidencias-container")) {
         RenderizarSelectAulas();
@@ -38,6 +45,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const formData = new FormData(formularioIncidencias);
         
             const datos = Object.fromEntries(formData.entries());
+
+            if(!datos.aulaId || !datos.responsable || !datos.tipo || !datos.prioridad || !datos.fecha || !datos.descripcion || !datos.estado){
+                alert("Por favor, complete todos los campos");
+                return;
+            }
         
             if(datos.descripcion.length < 10){
                 alert("La descripción debe tener al menos 10 caracteres");
@@ -64,6 +76,10 @@ document.addEventListener("DOMContentLoaded", () => {
             );
         
             RenderizarIncidencias(incidencias);
+
+            RenderizarAulas(aulas);
+
+            RenderizarSelectAulas();
         
             formularioIncidencias.reset();
         
@@ -78,6 +94,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const formDataAulas = new FormData(formularioAulas);
         
             const datosAulas = Object.fromEntries(formDataAulas.entries());
+
+            if(!datosAulas.nombre || !datosAulas.capacidad || !datosAulas.cantidad || !datosAulas.estado){
+                alert("Por favor, complete todos los campos");
+                return;
+            }
         
             if(aulasEditando){
                 const aula = aulas.find(a => a.id == aulasEditando);
@@ -96,7 +117,6 @@ document.addEventListener("DOMContentLoaded", () => {
         
             RenderizarAulas(aulas);
 
-            console.log(aulas);
         
             RenderizarSelectAulas();
         
@@ -116,18 +136,12 @@ document.addEventListener("DOMContentLoaded", () => {
             const datosReservas = Object.fromEntries(formDataReservas.entries());
         
             const aula = aulas.find(a => a.id == datosReservas.aulaId);
-        
-            const incidenciasCriticas = incidencias.filter(i => i.aulaId == aula.id && i.prioridad == "urgente");
-        
-            if(incidenciasCriticas.length > 0){
-                alert("El aula seleccionada tiene incidencias críticas, por favor selecciona otra");
+
+            if(!datosReservas.aulaId || !datosReservas.docente || !datosReservas.curso || !datosReservas.aulaId || !datosReservas.fecha || !datosReservas.hora || !datosReservas.motivo){
+                alert("Por favor, complete todos los campos");
                 return;
             }
         
-            if(aula.estado == "ocupado"){
-                alert("El aula seleccionada esta ocupada, por favor selecciona otra");
-                return;
-            }
         
             if(reservasEditando){
                 const reserva = reservas.find(r => r.id == reservasEditando);
@@ -156,6 +170,37 @@ document.addEventListener("DOMContentLoaded", () => {
             formularioReservas.reset();
         
         })
+    }
+
+    if(document.getElementById("tareas-container")){
+        RenderizarTareas(tareas);
+
+        formularioTareas.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const formDataTareas = new FormData(formularioTareas);
+
+            const datosTareas = Object.fromEntries(formDataTareas.entries());
+
+            if(tareasEditando){
+                const tarea = tareas.find(t => t.id == tareasEditando);
+                
+                Object.assign(tarea, datosTareas);
+
+                tareasEditando = null;
+
+            }
+            else{
+                datosTareas.id = Date.now();
+
+                tareas.push(datosTareas);
+            }
+
+            localStorage.setItem("tareas", JSON.stringify(tareas));
+            RenderizarTareas(tareas);
+
+            formularioTareas.reset();
+        });
     }
 });
 
@@ -221,6 +266,10 @@ function EliminarIncidencia(id) {
     localStorage.setItem("incidencias", JSON.stringify(incidencias));
 
     RenderizarIncidencias(incidencias);
+
+    RenderizarAulas(aulas);
+
+    RenderizarSelectAulas();
 }
 
 function EditarIncidencia(id){
@@ -421,3 +470,58 @@ function EditarReserva(id){
     }
 }
 
+//Tareas
+
+function RenderizarTareas(array){
+    const contenedorTareas = document.getElementById("tareas-container");
+
+    contenedorTareas.innerHTML = "";
+
+    array.forEach((tarea) => {
+        contenedorTareas.innerHTML += `
+        <div class="card-tarea">
+            <div class="card-contenido">
+                <div class="card-campos">
+                    <div class="campo">
+                        <span class="campo-label">Título</span>
+                        <span class="campo-valor">${tarea.titulo}</span>
+                    </div>
+                    <div class="campo">
+                        <span class="campo-label">Descripción</span>
+                        <span class="campo-valor">${tarea.descripcion}</span>
+                    </div>
+                    <div class="campo">
+                        <span class="campo-label">Fecha Límite</span>
+                        <span class="campo-valor">${tarea.fechaLimite}</span>
+                    </div>
+                </div>
+                <div class="card-acciones">
+                    <button onclick="EditarTarea(${tarea.id})">Editar</button>
+                    <button onclick="EliminarTarea(${tarea.id})">Eliminar</button>
+                </div>
+            </div>
+        </div>`;
+    });
+}
+
+function EliminarTarea(id){
+    tareas = tareas.filter(t => t.id !== id);
+
+    localStorage.setItem("tareas", JSON.stringify(tareas))
+
+    renderizarTareas(tareas);
+}
+
+function EditarTarea(id){
+    const tarea = tareas.find(t => t.id == id);
+    const tareasFormulario = document.getElementById('overlay');
+    tareasFormulario.classList.toggle('active');
+
+    if(tarea){
+        tareasEditando = id;
+
+        formularioTareas.titulo.value = tarea.titulo;
+        formularioTareas.descripcion.value = tarea.descripcion;
+        formularioTareas.fechaLimite.value = tarea.fechaLimite;
+    }
+}
